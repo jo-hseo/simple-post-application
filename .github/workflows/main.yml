@@ -20,14 +20,14 @@ jobs:
       - name: 파일 전송을 위한 디렉토리 생성
         run: mkdir ./board-app
 
+      - name: github secrets에 저장된 ENV_PROPERTIES를 읽어서 .env 생성
+        run: echo "${{ secrets.ENV_PROPERTIES }}" > ./board-app/.env
+
       - name: Gradle Build
         run: ./gradlew clean build
 
       - name: Archive 파일명 변경
         run: mv ./build/libs/*SNAPSHOT.jar ./board-app/app.jar
-
-      - name: github secrets에 저장된 ENV_PROPERTIES를 읽어서 .env 생성
-        run: echo "${{ secrets.ENV_PROPERTIES }}" > ./board-app/.env
 
       - name: .env와 app.jar를 ec2에 전송
         uses: appleboy/scp-action@v1
